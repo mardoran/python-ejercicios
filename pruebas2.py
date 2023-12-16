@@ -17,7 +17,7 @@ print (sin_duplicados(["verde","azul","gris","azul","rojo","negro","rojo"])) """
 
 # #Función que recibe una matriz (una lista de listas) y devuelve otra eliminando sus duplicados
 # initialize list 
-matriz = [[5, 6, 8], [8, 5, 3], [9, 10, 3]]
+""" matriz = [[5, 6, 8], [8, 5, 3], [9, 10, 3]]
  
  
  
@@ -45,7 +45,7 @@ for lista in matriz: #nos quedamos con cada fila de la matriz
  
 # printing result
 print("The Matrix after duplicates removal is : " + str(matriz_sin_duplicar))
-
+ """
 
 # temps = [[1,2,3], [5,7], [1], [5,2,9]]
 # print (temps)
@@ -100,4 +100,78 @@ print("The Matrix after duplicates removal is : " + str(matriz_sin_duplicar))
         
 # print (diccionario)
     
+# Función que recibe una matriz y busca sus puntos de silla 
+# (mínimo de su fila y máximo de su columna o viceversa). Debe devolver una lista de tuplas con las coordenadas de los puntos de silla.    
+
+import numpy as np
+
+#vamos a crear 2 listas donde una almacene los elementos mínimos de cada fila y otra los máximos de cada columna
+#luego usaremos el elemento del mimos índice de esas 2 listas para crear nuestras tuplas
+def devuelve_lista_min_max(matriz, operacion):
+    lista=[]
+    valor=None
+    for fila in matriz:
+        for elem in fila:
+            if valor is None or (elem<valor and operacion=="min") or (elem>valor and operacion=="max"):
+                valor= elem
+        lista.append(valor)   
+        valor=None
+    return lista
+
+#para poder iterar las columnas fácilmente transponemos nuestra matriz 
+def transponer_matriz(matriz):
+    #podemos crear la matriz transpuesta de ambas maneras * quería probar con las utilidades de la librería numpy que son más sencillas
+    #return [[matriz[j][i] for j in range (len (matriz))] for i in range (len (matriz[0]))]
+    return np.transpose(matriz)
+
+def devuelve_lista_tuplas(min_fila, max_col):
+    lista_De_tuplas=[]
+    for a in range(len(min_fila)):
+        tupla=(min_fila[a],max_col[a])
+        lista_De_tuplas.append(tupla)
+    return(lista_De_tuplas)
+
+def devuelve_puntos_silla(matriz):
+    min_filas=(devuelve_lista_min_max(matriz,"min"))
+    matriz_transpuesta= transponer_matriz(matriz)
+    max_cols=(devuelve_lista_min_max(matriz_transpuesta,"max"))
+    return (devuelve_lista_tuplas(min_filas, max_cols))
+   
+
+print(devuelve_puntos_silla([[6, 3, 2], [4, 1, 6], [9, 5, 4]]))
+print(devuelve_puntos_silla([[8, 5, 3], [2, 0, -5], [-1, 9, 3]]))
+
+#recorremos 2 veces, una para encontrar min fila y otra max columna
+#crearemos los arrays de tuplas al final
+# min_fila=[]
+# max_col=[]
+# min=None
+
+# for fila in matriz:
+#     for elem in fila:
+#         if min is None or elem<min:
+#             min= elem
+#     min_fila.append(min)   
+#     min=None
+
+# print(min_fila)  
+  
+
+#transponemos la matriz para comparar las columnas en filas
+
+# max=None
+# for fila in matriz_transpuesta:
+#     for elem in fila:
+#         if max is None or elem>max:
+#             max= elem
+#     max_col.append(max)   
+#     max=None
     
+# print(max_col)
+
+# lista_De_tuplas=[]
+# for a in range(len(min_fila)):
+#     tupla=(min_fila[a],max_col[a])
+#     lista_De_tuplas.append(tupla)
+            
+# print (lista_De_tuplas)
